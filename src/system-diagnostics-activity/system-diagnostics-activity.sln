@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.809.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "system-diagnostics-activity", "system-diagnostics-activity.csproj", "{205E7370-13B2-4B73-B137-B26939791B0B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{205E7370-13B2-4B73-B137-B26939791B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205E7370-13B2-4B73-B137-B26939791B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205E7370-13B2-4B73-B137-B26939791B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205E7370-13B2-4B73-B137-B26939791B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCA3E088-C39D-4D8E-BF6E-1C32775EEF81}
+	EndGlobalSection
+EndGlobal

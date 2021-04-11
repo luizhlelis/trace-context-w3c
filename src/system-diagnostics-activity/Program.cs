@@ -4,7 +4,7 @@ using System.Diagnostics;
 var parentActivity = new Activity("Parent");
 
 parentActivity.Start();
-Console.WriteLine("{0} , id - {1}", parentActivity.OperationName, parentActivity.Id);
+Console.WriteLine("{0} activity id: {1}", parentActivity.OperationName, parentActivity.Id);
 CallChildActivity();
 parentActivity.Stop();
 
@@ -15,6 +15,6 @@ void CallChildActivity()
     var childActivity = new Activity("Child");
 
     childActivity.Start();
-    Console.WriteLine("{0} , id - {1}", childActivity.OperationName, childActivity.Id);
+    Console.WriteLine("{0} activity, id: {1}", childActivity.OperationName, childActivity.Id);
     childActivity.Stop();
 }

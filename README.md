@@ -12,6 +12,21 @@ Unhandled exception. System.InvalidOperationException: Stack trace example
 
 ![Distributed Trace](doc/distributed-trace.png)
 
+## APM tools/vendors
+
+Application Performance Management tools examples:
+
+- Dynatrace
+- Application Insights
+- Elastic APM
+- Zipkin
+
+## W3C Purpose
+
+Defines standard HTTP headers and a value format to propagate context information that enables distributed tracing scenarios.
+
+![Distributed Trace](doc/w3c-trace-context.png)
+
 ## Propagation fields
 
 - `traceparent`: indentifier responsable to describe the incoming request position in its trace graph;
@@ -41,3 +56,5 @@ Example:
 - `trace-flags` (8-bit): flags that represent recommendations of the caller: trust and abuse, bug in the caller or different load between caller and callee service might force callee to downsample.
 
 Ps: all the fields are represented as [hexadecimal](https://www.cs.princeton.edu/courses/archive/fall07/cos109/bc.html) not binary.
+
+take a look at [sample code](src/).

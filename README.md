@@ -26,20 +26,11 @@ just like the `stack trace`, every `Activity` needs an Id to be identifiable and
 - Elastic APM
 - Zipkin
 
-now imagine a scenery where there are many APM vendors and also many languages with different diagnostics libraries, some of them identify a trace with an `operation-id`, other calls it as `request-id` and also there is another one which reconize it as a `trace-id`, besides that, the id's format changes depending on vendor or diagnostic library: one is in the `hierarchical` format, another one is an `UUID` and there is also a 24 character `string` identifier.
+now imagine a scenery where there are many APM vendors and also many languages with different diagnostics libraries, some of them identify a trace with an `operation-id`, other calls it as `request-id` and also there is another one which reconize it as a `trace-id`, besides that, the id's format changes depending on vendor or diagnostic library: one is in the `hierarchical` format, another one is an `UUID` and there is also a 24 character `string` identifier. This is where [trace context](https://www.w3.org/TR/trace-context/) standard comes in.
+
+## The trace context standard
 
 Here you're gonna find a simple description of what is the purpose of [W3C Trace Context](https://www.w3.org/TR/trace-context/) and what kind of problem it came to solve.
-
-## APM tools/vendors
-
-Application Performance Management tools examples:
-
-- Dynatrace
-- Application Insights
-- Elastic APM
-- Zipkin
-
-## W3C Purpose
 
 Defines standard HTTP headers and a value format to propagate context information that enables distributed tracing scenarios.
 

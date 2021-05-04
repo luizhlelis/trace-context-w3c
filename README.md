@@ -69,18 +69,23 @@ Therefore, applying the trace context concept in an application like the [Figure
 
 note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` are been propagated throughout the trace flow.
 
-`parent-id` could cause confusion due to its name
+In some cases, `parent-id` could cause confusion due to its name, but that name is based on the vision of incoming requests. So one must think in the endpoint side, for example: imagine the message that had just arrived in the controller, the `traceparent` received in the header hasn't had his `parent-id` updated yet by the midleware, so in that vision the id inside `traceparent` is the upstream id or also the id of its parent.
 
-[Trace Context Level 2](https://w3c.github.io/trace-context/) that has an response standard where the `parent-id` call `child-id`
+There is a Working Draft (WD) document, the [Trace Context Level 2](https://w3c.github.io/trace-context/), that has an response standard where the `parent-id` calls `child-id`.
+
+> **_NOTE:_** See [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) for more information about the steps until a document become a w3c recomendation
+
 ## The `tracestate` field
 
 The standard uses a fictitious example to describe what is `tracestate` for and I will reproduce it in this article: imagine a client and server system that use different trace vendors, the first is called Congo and the second is called Rojo. A client traced in the Congo system adds in `tracestate` the vendor-specific id (with its specific format): `tracestate: congo=t61rcWkgMzE`. So the outbound HTTP request will be
 
-any other user-supplied or application information shoud be added in the [baggage](https://w3c.github.io/baggage/) field, that is in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
+Any other user-supplied or application information shoud be added in the [baggage](https://w3c.github.io/baggage/) field, that is in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
 
 ## Trace Context: AMQP protocol
 
 Another example of document in Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) is the
 [Trace Context: AMQP protocol](https://w3c.github.io/trace-context-amqp/).
+
+As the standard recomends, fields `traceparent` and `tracestate` SHOULD be added to the message in the `application-properties` section by message publisher. Message reader SHOULD construct the full trace context by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist - from `application-properties`.
 
 take a look at [sample code](src/).

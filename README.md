@@ -64,7 +64,7 @@ for example:
 
 Therefore, applying the trace context concept in an application like the [Figure 1](#firstfigure) will result in the diagram below:
 
-### <a name="firstfigure"></a>Figure 2 - Propagation fields
+### <a name="secondfigure"></a>Figure 2 - Propagation fields
 ![Distributed Trace](doc/w3c-trace-context.png)
 
 note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` are been propagated throughout the trace flow.
@@ -118,15 +118,26 @@ There is a Working Draft (WD) document, the [Trace Context Level 2](https://w3c.
 
 ## The `tracestate` field
 
-The standard uses a fictitious example to describe what is `tracestate` for, I will reproduce it in this article. Imagine a client and server system that use different trace vendors, the first is called Congo and the second is called Rojo. A client traced in the Congo system adds in `tracestate` the vendor-specific id (with its specific format): `tracestate: congo=t61rcWkgMzE`. So the outbound HTTP request will be:
+The standard uses a fictitious example to describe what is `tracestate` for, I will reproduce it in this article. Imagine a client and server system that use different trace vendors, the first is called Congo and the second is called Rojo. A client traced in the Congo system adds in `tracestate` the vendor-specific id (with its specific format): `tracestate: congo=t61rcWkgMzE`. So the outbound HTTP request will be enriched with the headers below:
 
-Any other user-supplied or application information shoud be added in the [baggage](https://w3c.github.io/baggage/) field, that is in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
+```bash
+traceparent: 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+
+tracestate: congo=t61rcWkgMzE
+```
+
+any other user-supplied information (different from vendor-specific info) shoud be added in the [baggage](https://w3c.github.io/baggage/) field, that's another standard which is in Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
 
 ## Trace Context: AMQP protocol
 
-Another example of document in Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) is the
-[Trace Context: AMQP protocol](https://w3c.github.io/trace-context-amqp/).
+As displayed in [Figure 2](#secondfigure), in a microservice architecture, it's common to propagate messages throw a broker. For that kind of operation, there is another document that specifies the pattern (in case of using AMQP protocol), is the [Trace Context: AMQP protocol](https://w3c.github.io/trace-context-amqp/).
 
-As the standard recomends, fields `traceparent` and `tracestate` SHOULD be added to the message in the `application-properties` section by message publisher. Message reader SHOULD construct the full trace context by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist - from `application-properties`.
+The `Trace Context: AMQP protocol` is another example of document in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft). That standard specifies the trace context fields placement in the message different from the HTTP standard.
+
+The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be constructed by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in AMQP protocol:
+### <a name="thirdfigure"></a>Figure 3 - AMQP message format
+![Distributed Trace](doc/amqp-message-format.png)
+
+The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage, in other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 
 take a look at [sample code](src/).

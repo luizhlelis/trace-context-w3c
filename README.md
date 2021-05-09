@@ -150,7 +150,9 @@ If you got until here and liked the article content, let me know reacting to the
 
 BOGARD, Jimmy. [Building End-to-End Diagnostics and Tracing: Trace Context](https://jimmybogard.com/building-end-to-end-diagnostics-and-tracing-a-primer-trace-context/)
 
-DRUTU, Bogdan; KANZHELEV, Sergey; MCLEAN, Morgan; MOLNAR, Nik; REITBAUER, Alois; SHKURO, Yuri. [W3C Recommendation - Trace Context](https://www.w3.org/TR/trace-context/#traceparent-header)
+DRUTU, Bogdan; KANZHELEV, Sergey; MCLEAN, Morgan; MOLNAR, Nik; REITBAUER, Alois; SHKURO, Yuri. [W3C Recommendation - Trace Context](https://www.w3.org/TR/trace-context/)
+
+DRUTU, Bogdan; KANZHELEV, Sergey; MCLEAN, Morgan; MOLNAR, Nik; REITBAUER, Alois; SHKURO, Yuri. [W3C Recommendation - Trace Context Level 2](https://w3c.github.io/trace-context/)
 
 GODFREY, Robert; INGHAM, David; SCHLOMING, Rafael. [Advanced Message Queuing Protocol (AMQP) Version 1.0, Part 3: Messaging](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html)
 

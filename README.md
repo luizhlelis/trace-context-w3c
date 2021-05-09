@@ -1,3 +1,5 @@
+[Published article](https://dev.to/luizhlelis/using-w3c-trace-context-standard-in-distributed-tracing-3743)
+
 # Using W3C Trace Context standard in distributed tracing
 
 In the software development process, when a system experiences a failure in runtime, it's natural for a developer to try to link that failure with who called that method and also which was the original request. This is where [stack trace](https://en.wikipedia.org/wiki/Stack_trace) comes in, look at an example below:

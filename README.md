@@ -134,10 +134,29 @@ As displayed in [Figure 2](#secondfigure), in a microservice architecture, it's 
 
 The `Trace Context: AMQP protocol` is another example of document in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft). That standard specifies the trace context fields placement in the message different from the HTTP standard.
 
-The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be constructed by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in AMQP protocol:
+The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be constructed by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in the AMQP protocol:
 ### <a name="thirdfigure"></a>Figure 3 - AMQP message format
 ![Distributed Trace](doc/amqp-message-format.png)
 
 The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage, in other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 
-take a look at [sample code](src/).
+## Conclusion
+The W3C Trace Context standard came to define a pattern to the distributed tracing process. Currently, there is only one `W3C Recommendation` which is for HTTP calls (lauched in february 2020), all the other standards are in working in process (AMQP, MQTT and baggage). It doesn't means that you should avoid to use the standard in a production environment, but keep in mind that some things are going to change and it's important to be up to date with newer releases.
+
+If you got until here and liked the article content, let me know reacting to the current post. You can also open a discussion below, I'll try to answear soon. On the other hand, if you think that I said something wrong, please open an issue in the [article's github repo](https://github.com/luizhlelis/trace-context-w3c). In the next article, I'll show a full distributed trace example using the trace context concept (in a microsservice architecture using `.NET 5`). Hope you like it!
+
+## References
+
+BOGARD, Jimmy. [Building End-to-End Diagnostics and Tracing: Trace Context](https://jimmybogard.com/building-end-to-end-diagnostics-and-tracing-a-primer-trace-context/)
+
+DRUTU, Bogdan; KANZHELEV, Sergey; MCLEAN, Morgan; MOLNAR, Nik; REITBAUER, Alois; SHKURO, Yuri. [W3C Recommendation - Trace Context](https://www.w3.org/TR/trace-context/#traceparent-header)
+
+GODFREY, Robert; INGHAM, David; SCHLOMING, Rafael. [Advanced Message Queuing Protocol (AMQP) Version 1.0, Part 3: Messaging](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html)
+
+KANZHELEV, Sergey; MCLEAN, Morgan, REITBAUER, Alois. [W3C Editor's draft - Propagation format for distributed trace context: Baggage](https://w3c.github.io/baggage/)
+
+KANZHELEV, Sergey; VASTERS, Clemens. [W3C Editor's draft - Trace Context: AMQP protocol](https://w3c.github.io/trace-context-amqp/)
+
+KANZHELEV, Sergey; VASTERS, Clemens. [W3C Editor's draft - Trace Context: MQTT protocol](https://w3c.github.io/trace-context-mqtt/)
+
+NEVILE, Charles M. [World Wide Web Consortium Process Document](https://www.w3.org/2017/Process-20170301/)

@@ -16,7 +16,7 @@ Imagine a system designed as a microservice architecture where two APIs communic
 
 ### <a name="firstfigure"></a>Figure 1 - Distributed trace
 
-![distributed-trace](doc/distributed-trace.png)
+![distributed-trace](https://raw.githubusercontent.com/luizhlelis/trace-context-w3c/main/doc/distributed-trace.png)
 
 just like the `stack trace`, every `Activity` needs an Id to be identifiable and also needs to know the `Activity` Id of who called it. With the purpose of solving this kind of problem, some vendors came up delivering not only the distributed trace message information but also the application performance, the load time, the application's response time, and other stuff. That kind of vendor is called Application Performance Management tools (APM tools) or also trace systems, below are some examples:
 
@@ -66,7 +66,7 @@ Therefore, applying the trace context concept in an application like the [Figure
 
 ### <a name="secondfigure"></a>Figure 2 - Propagation fields
 
-![propagation-fields](doc/w3c-trace-context.png)
+![propagation-fields](https://raw.githubusercontent.com/luizhlelis/trace-context-w3c/main/doc/w3c-trace-context.png)
 
 note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` have been propagated throughout the trace flow.
 
@@ -139,7 +139,7 @@ The standard recomends that the fields `traceparent` and `tracestate` should be 
 
 ### <a name="thirdfigure"></a>Figure 3 - AMQP message format
 
-![amqp-message-format](doc/amqp-message-format.png)
+![amqp-message-format](https://raw.githubusercontent.com/luizhlelis/trace-context-w3c/main/doc/amqp-message-format.png)
 
 The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage. In other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 

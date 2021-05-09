@@ -1,4 +1,4 @@
-# W3C's Trace Context standard and how to enrich message tracing with APM tools
+# Using W3C Trace Context standard in distributed tracing
 
 In the software development process, when a system experiences a failure in runtime, it's natural for a developer to try to link that failure with who called that method and also which was the original request. This is where [stack trace](https://en.wikipedia.org/wiki/Stack_trace) comes in, look at an example below:
 
@@ -141,6 +141,7 @@ The standard recomends that the fields `traceparent` and `tracestate` should be 
 The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage, in other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 
 ## Conclusion
+
 The W3C Trace Context standard came to define a pattern to the distributed tracing process. Currently, there is only one `W3C Recommendation` which is for HTTP calls (lauched in february 2020), all the other standards are in working in process (AMQP, MQTT and baggage). It doesn't means that you should avoid to use the standard in a production environment, but keep in mind that some things are going to change and it's important to be up to date with newer releases.
 
 If you got until here and liked the article content, let me know reacting to the current post. You can also open a discussion below, I'll try to answear soon. On the other hand, if you think that I said something wrong, please open an issue in the [article's github repo](https://github.com/luizhlelis/trace-context-w3c). In the next article, I'll show a full distributed trace example using the trace context concept (in a microsservice architecture using `.NET 5`). Hope you like it!

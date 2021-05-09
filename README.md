@@ -8,7 +8,7 @@ Unhandled exception. System.InvalidOperationException: Stack trace example
    at Program.Main() in /Users/luizhlelis/Documents/projects/personal/trace-context-w3c/src/system-diagnostics-activity/Program.cs:line 11
 ```
 
-with the information above we're able to know that a failure happened at `CallChildActivity()` method (line 22) which was called by the `Main()` method (line 11) both inside the `Program.cs` class. That's the reason why the runtime message tracking is essential for a software health and reliability, a rich information like that greatly increases the troubleshoot productivity. So the `stack trace` suits very well in terms of message trace when the subject is a single process application, like monolithic systems. On the other hand, when dealing with distributed systems like in a microservice architecture, the stack trace is not enough to expose the entire message tracking, that's the reason why distributed tracing tools and standards became necessary. The W3C defines a standard for this type of tracking, which is called `Trace Context`.
+with the information above we're able to know that a failure happened at `CallChildActivity()` method (line 22) which was called by the `Main()` method (line 11) both inside the `Program.cs` class. That's the reason why the runtime message tracking is essential for a software health and reliability, a rich information like that greatly increases the troubleshoot productivity. So the `stack trace` suits very well in terms of message trace when the subject is a single process application, like monolithic systems. On the other hand, when dealing with distributed systems like in a microservice architecture, the stack trace is not enough to expose the entire message tracking. That's the reason why distributed tracing tools and standards became necessary. The W3C defines a standard for this type of tracking, which is called `Trace Context`.
 
 ## W3C Trace Context purpose
 
@@ -18,7 +18,7 @@ Imagine a system designed as a microservice architecture where two APIs communic
 
 ![distributed-trace](doc/distributed-trace.png)
 
-just like the `stack trace`, every `Activity` needs an Id to be identifiable and also needs to know the `Activity` Id of who called it. With the purpose of solve this kind of problem, some vendors came up delivering not only the distributed trace message information but also the application performance, the load time, the application's response time, and other stuff. That kind of vendor is called Application Performance Management tools (APM tools) or also trace systems, below are some examples:
+just like the `stack trace`, every `Activity` needs an Id to be identifiable and also needs to know the `Activity` Id of who called it. With the purpose of solving this kind of problem, some vendors came up delivering not only the distributed trace message information but also the application performance, the load time, the application's response time, and other stuff. That kind of vendor is called Application Performance Management tools (APM tools) or also trace systems, below are some examples:
 
 - Dynatrace
 - New Relic
@@ -28,7 +28,7 @@ just like the `stack trace`, every `Activity` needs an Id to be identifiable and
 
 > **_NOTE:_**  I chose to use the term `vendor` to describe all the trace systems because that's the way as the standard refers to them. But it seems that [it'll be changed soon](https://github.com/w3c/trace-context/issues/387).
 
-now imagine a scenery where there are many vendors and also many languages with different diagnostics libraries, some of them identify a trace with an `operation-id`, other calls it as `request-id` and also there is another one which reconize it as a `trace-id`. Besides that, the id's format changes depending on vendor or diagnostic library: one is in the `hierarchical` format, another one is an `UUID` and there is also a 24 character `string` identifier. That scenery would result in: systems with different tracing vendors will not be able to correlate the traces and also will not be able to propagate traces as there is no unique identification that is forwarded. This is where trace context standard comes in.
+now imagine a scenery where there are many vendors and also many languages with different diagnostics libraries, some of them identify a trace with an `operation-id`, other calls it as `request-id` and also there is another one which recognizes it as a `trace-id`. Besides that, the id's format changes depending on vendor or diagnostic library: one is in the `hierarchical` format, another one is an `UUID` and there is also a 24 character `string` identifier. That scenery would result in: systems with different tracing vendors will not be able to correlate the traces and also will not be able to propagate traces as there is no unique identification that is forwarded. This is where trace context standard comes in.
 
 ## The trace context standard
 
@@ -54,7 +54,7 @@ for example:
 
 - `version` (8-bit): trace context version that the system has adopted. The current is `00`.
 
-- `trace-id` (16-byte array): the ID of the whole trace and is used to identify a distributed trace globally through a system.
+- `trace-id` (16-byte array): the ID of the whole trace. It's used to identify a distributed trace globally through a system.
 
 - `parent-id` / `span-id` (8-byte array): used to identify the parent of the current span on incoming requests or the current span on an outgoing request.
 
@@ -68,7 +68,7 @@ Therefore, applying the trace context concept in an application like the [Figure
 
 ![propagation-fields](doc/w3c-trace-context.png)
 
-note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` are been propagated throughout the trace flow.
+note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` have been propagated throughout the trace flow.
 
 To describe better the `traceparent` dinamic, take a look at the example below, wrote in c#, where two spans scopes are generated and the context is being propagated throughout them:
 
@@ -99,7 +99,7 @@ void CallChildActivity()
 
 > **_NOTE:_** the `System.Diagnostics.Activity` library in .net 5 has already been configured as the w3c standard
 
-even though the example above shows a single process application, that's the pattern specified by the Trace Context standard. Basically, what that program is doing is: first it opens an upstream span scope and print the `traceparent` in the stdout, then it calls a downstream method which opens another span scope and also prints its `traceparent` and close scope after that, the upstream span scope was closed after all of it. The systems output follow below:
+even though the example above shows a single process application, that's the pattern specified by the Trace Context standard. Basically, what that program is doing is: first it opens an upstream span scope and print the `traceparent` in the stdout, then it calls a downstream method which opens another span scope and also prints its `traceparent` and close the scope. After that, the upstream span scope was closed after all of it. The systems output follow below:
 
 ```bash
 Upstream
@@ -127,7 +127,7 @@ traceparent: 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
 tracestate: congo=t61rcWkgMzE
 ```
 
-any other user-supplied information (different from vendor-specific info) shoud be added in the [baggage](https://w3c.github.io/baggage/) field, that's another standard which is in Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
+any other user-supplied information (different from vendor-specific info) should be added in the [baggage](https://w3c.github.io/baggage/) field, that's another standard which is in Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft) (is not a w3c recomendation yet).
 
 ## Trace Context: AMQP protocol
 
@@ -135,19 +135,19 @@ As displayed in [Figure 2](#secondfigure), in a microservice architecture, it's 
 
 The `Trace Context: AMQP protocol` is another example of document in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft). That standard specifies the trace context fields placement in the message different from the HTTP standard.
 
-The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be constructed by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in the AMQP protocol:
+The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be built by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in the AMQP protocol:
 
 ### <a name="thirdfigure"></a>Figure 3 - AMQP message format
 
 ![amqp-message-format](doc/amqp-message-format.png)
 
-The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage, in other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
+The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage. In other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 
 ## Conclusion
 
 The W3C Trace Context standard came to define a pattern to the distributed tracing process. Currently, there is only one `W3C Recommendation` which is for HTTP calls (lauched in february 2020), all the other standards are in working in process (AMQP, MQTT and baggage). It doesn't means that you should avoid to use the standard in a production environment, but keep in mind that some things are going to change and it's important to be up to date with newer releases.
 
-If you got until here and liked the article content, let me know reacting to the current post. You can also open a discussion below, I'll try to answear soon. On the other hand, if you think that I said something wrong, please open an issue in the [article's github repo](https://github.com/luizhlelis/trace-context-w3c). In the next article, I'll show a full distributed trace example using the trace context concept (in a microsservice architecture using `.NET 5`). Hope you like it!
+If you got until here and liked the article content, let me know reacting to the current post. You can also open a discussion below, I'll try to answer soon. On the other hand, if you think that I said something wrong, please open an issue in the [article's github repo](https://github.com/luizhlelis/trace-context-w3c). In the next article, I'll show a full distributed trace example using the trace context concept (in a microsservice architecture using `.NET 5`). Hope you like it!
 
 ## References
 

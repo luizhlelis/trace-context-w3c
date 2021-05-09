@@ -65,7 +65,8 @@ for example:
 Therefore, applying the trace context concept in an application like the [Figure 1](#firstfigure) will result in the diagram below:
 
 ### <a name="secondfigure"></a>Figure 2 - Propagation fields
-![Distributed Trace](doc/w3c-trace-context.png)
+
+![propagation-fields](doc/w3c-trace-context.png)
 
 note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` are been propagated throughout the trace flow.
 
@@ -135,8 +136,10 @@ As displayed in [Figure 2](#secondfigure), in a microservice architecture, it's 
 The `Trace Context: AMQP protocol` is another example of document in the Working Draft (WD) step of the [w3c process](https://www.w3.org/2017/Process-20170301/#working-draft). That standard specifies the trace context fields placement in the message different from the HTTP standard.
 
 The standard recomends that the fields `traceparent` and `tracestate` should be added to the message in the `application-properties` section by message publisher. On the message readers side, the trace context should be constructed by reading `traceparent` and `tracestate` fields from the `message-annotations` first and if not exist, from `application-properties`. See below the message format in the AMQP protocol:
+
 ### <a name="thirdfigure"></a>Figure 3 - AMQP message format
-![Distributed Trace](doc/amqp-message-format.png)
+
+![amqp-message-format](doc/amqp-message-format.png)
 
 The reason for the trace context fields placement in the message is that the `application-properties` section is defined by the message publisher and the brokers cannot mutate those properties because that section is immutable. On the other hand, the section `message-annotations` is designed for message brokers usage, in other words, the fields inside that section can be mutated during the message processing. So it means that in case the need arises to annotate the message inside the middleware as it flows, that must happen in the `message-annotations` section, using the fields sent by the publisher in `application-properties` as a base.
 

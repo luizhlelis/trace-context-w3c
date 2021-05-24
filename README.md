@@ -72,7 +72,7 @@ Therefore, applying the trace context concept in an application like the [Figure
 
 note that the `trace-id` is an identifier of all the trace, the `parent-id` identifies a delimited scope of the whole trace. Moreover, the `traceparent` along with the `tracestate` have been propagated throughout the trace flow.
 
-To describe better the `traceparent` dinamic, take a look at the example below, wrote in c#, where two spans scopes are generated and the context is being propagated throughout them:
+To describe better the `traceparent` dynamics, take a look at the example below, wrote in c#, where two spans scopes are generated and the context is being propagated throughout them:
 
 ``` csharp
 using System;
